@@ -4,8 +4,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import java.util.regex.Pattern
+import androidx.lifecycle.ViewModel
 
-class UserRegisterScreenViewModel {
+class UserRegisterScreenViewModel : ViewModel() {
     var nombre by mutableStateOf("")
     var boleta by mutableStateOf("")
     var correo by mutableStateOf("")
@@ -14,12 +15,12 @@ class UserRegisterScreenViewModel {
     var confirmPassword by mutableStateOf("")
 
     // Mensajes de error
-    var nombreError by mutableStateOf<String?>(null)
-    var boletaError by mutableStateOf<String?>(null)
-    var correoError by mutableStateOf<String?>(null)
-    var carreraError by mutableStateOf<String?>(null)
-    var passwordError by mutableStateOf<String?>(null)
-    var confirmPasswordError by mutableStateOf<String?>(null)
+    var nombreError by mutableStateOf("")
+    var boletaError by mutableStateOf("")
+    var correoError by mutableStateOf("")
+    var carreraError by mutableStateOf("")
+    var passwordError by mutableStateOf("")
+    var confirmPasswordError by mutableStateOf("")
     var registroExitoso by mutableStateOf(false)
 
     fun validarCampos(): Boolean {
@@ -28,32 +29,32 @@ class UserRegisterScreenViewModel {
         nombreError = if (nombre.isBlank()) {
             isValid = false
             "El nombre es obligatorio"
-        } else null
+        } else {""}
 
         boletaError = if (boleta.isBlank()) {
             isValid = false
             "La boleta es obligatoria"
-        } else null
+        } else {""}
 
         correoError = if (!isEmailValido(correo)) {
             isValid = false
             "Correo no válido"
-        } else null
+        } else {""}
 
         carreraError = if (carrera.isBlank()) {
             isValid = false
             "La carrera es obligatoria"
-        } else null
+        } else {""}
 
         passwordError = if (password.length < 6) {
             isValid = false
             "La contraseña debe tener al menos 6 caracteres"
-        } else null
+        } else { "" }
 
         confirmPasswordError = if (confirmPassword != password) {
             isValid = false
             "Las contraseñas no coinciden"
-        } else null
+        } else {""}
 
         registroExitoso = isValid
         return isValid

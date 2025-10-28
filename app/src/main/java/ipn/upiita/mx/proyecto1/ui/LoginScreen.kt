@@ -30,12 +30,12 @@ import ipn.upiita.mx.proyecto1.viewModel.LoginScreenViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LoginScreen(navController: NavHostController, viewModel: LoginScreenViewModel= viewModel()) {
+fun LoginScreen(navController: NavHostController, LSviewModel: LoginScreenViewModel= viewModel()) {
 
 
     fun validateAndLogin() {
 
-        if (viewModel.validate()) {
+        if (LSviewModel.validate()) {
             navController.navigate("menu")
         }
     }
@@ -59,18 +59,18 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginScreenViewMode
 
 
             OutlinedTextField(
-                value = viewModel.email,
-                onValueChange = { viewModel.email = it },
+                value = LSviewModel.email,
+                onValueChange = { LSviewModel.email = it },
                 label = { Text("Correo electrónico") },
-                isError = viewModel.emailError.isNotEmpty(),
+                isError = LSviewModel.emailError.isNotEmpty(),
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Next
                 ),
                 modifier = Modifier.fillMaxWidth()
             )
-            if (viewModel.emailError.isNotEmpty()) {
-                Text(viewModel.emailError, color = MaterialTheme.colorScheme.error)
+            if (LSviewModel.emailError.isNotEmpty()) {
+                Text(LSviewModel.emailError, color = MaterialTheme.colorScheme.error)
             }
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -80,10 +80,10 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginScreenViewMode
 
 
             OutlinedTextField(
-                value = viewModel.password,
-                onValueChange = { viewModel.password = it },
+                value = LSviewModel.password,
+                onValueChange = { LSviewModel.password = it },
                 label = { Text("Contraseña") },
-                isError = viewModel.passwordError.isNotEmpty(),
+                isError = LSviewModel.passwordError.isNotEmpty(),
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Password,
@@ -91,8 +91,8 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginScreenViewMode
                 ),
                 modifier = Modifier.fillMaxWidth()
             )
-            if (viewModel.passwordError.isNotEmpty()) {
-                Text(viewModel.passwordError, color = MaterialTheme.colorScheme.error)
+            if (LSviewModel.passwordError.isNotEmpty()) {
+                Text(LSviewModel.passwordError, color = MaterialTheme.colorScheme.error)
             }
 
             Spacer(modifier = Modifier.height(16.dp))

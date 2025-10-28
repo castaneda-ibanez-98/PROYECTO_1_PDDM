@@ -8,7 +8,8 @@ import java.util.regex.Pattern
 import ipn.upiita.mx.proyecto1.ui.*
 import ipn.upiita.mx.proyecto1.ui.Navigator
 import androidx.navigation.NavHostController
-class LoginScreenViewModel{
+import androidx.lifecycle.ViewModel
+class LoginScreenViewModel : ViewModel(){
     var email by mutableStateOf("")
     var password by mutableStateOf("")
 

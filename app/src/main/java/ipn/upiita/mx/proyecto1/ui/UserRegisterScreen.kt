@@ -24,11 +24,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import ipn.upiita.mx.proyecto1.viewModel.*
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+
 @Composable
 fun RegisterScreen (navController: NavHostController,regVM:UserRegisterScreenViewModel) {
 
@@ -51,9 +55,9 @@ fun RegisterScreen (navController: NavHostController,regVM:UserRegisterScreenVie
                 value = regVM.nombre,
                 onValueChange = { regVM.nombre = it },
                 label = { Text("nombre") },
-                isError = regVM.correoError.isNotEmpty(),
+                isError = regVM.nombre.isNotEmpty() ,
                 keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Email,
+                    keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Next
                 ),
                 modifier = Modifier.fillMaxWidth()
@@ -92,7 +96,7 @@ fun RegisterScreen (navController: NavHostController,regVM:UserRegisterScreenVie
                 label = { Text("boleta") },
                 isError = regVM.boletaError.isNotEmpty(),
                 keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Email,
+                    keyboardType = KeyboardType.Number ,
                     imeAction = ImeAction.Next
                 ),
                 modifier = Modifier.fillMaxWidth()
@@ -111,7 +115,7 @@ fun RegisterScreen (navController: NavHostController,regVM:UserRegisterScreenVie
                 label = { Text("carrera") },
                 isError = regVM.carreraError.isNotEmpty(),
                 keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Email,
+                    keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Next
                 ),
                 modifier = Modifier.fillMaxWidth()
