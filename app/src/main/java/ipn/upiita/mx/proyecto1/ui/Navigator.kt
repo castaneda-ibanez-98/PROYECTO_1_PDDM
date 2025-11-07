@@ -34,7 +34,6 @@ fun Navigator( db : AppDatabase) {
     val mdfyMjrVM: ModifyMajorScreenViewModel =viewModel()
     */
 
-    val UsrRgstVM : UserRegisterScreenViewModel = viewModel()
     val LoginScreenVM = remember { LoginScreenViewModel(usrViewModel) }
     val mdfyMjrVM: ModifyMajorScreenViewModel = viewModel()
 

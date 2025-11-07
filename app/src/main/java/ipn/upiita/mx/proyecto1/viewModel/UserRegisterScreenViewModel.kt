@@ -30,11 +30,14 @@ class UserRegisterScreenViewModel(private val userViewModel: UserViewModel) : Vi
 
     fun validarCampos(): Boolean {
         var isValid = true
-
+        Log.d("UserRegisterScreenViewModel", "iniciando comprobacion de campos")
         nombreError = if (nombre.isBlank()) {
             isValid = false
             "El nombre es obligatorio"
-        } else {""}
+        } else {
+            Log.d("UserRegisterScreenViewModel", "el nombre esta llenado")
+            ""
+        }
 
         boletaError = if (boleta.isBlank()) {
             isValid = false
@@ -44,7 +47,9 @@ class UserRegisterScreenViewModel(private val userViewModel: UserViewModel) : Vi
         correoError = if (!isEmailValido(correo)) {
             isValid = false
             "Correo no válido"
-        } else {""}
+        } else {
+            Log.d("UserRegisterScreenViewModel", "el email es valido")
+            ""}
 
         carreraError = if (carrera.isBlank()) {
             isValid = false
