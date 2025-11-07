@@ -25,8 +25,10 @@ import androidx.compose.runtime.*
 fun Navigator( db : AppDatabase) {
     val navController = rememberNavController()
     // Crear el repositorio
-    val repo = UserRepository(db.userDao())
-    val usrViewModel = UserViewModel(repo)
+    val userRepo = UserRepository(db.userDao())
+    val taskRepo = TaskRepository(db.taskDao())
+    val usrViewModel = UserViewModel(userRepo)
+    val tskViewModel = TaskViewModel(taskRepo)
     /*
     forma original
     val UsrRgstVM: UserRegisterScreenViewModel = viewModel()
@@ -39,13 +41,14 @@ fun Navigator( db : AppDatabase) {
 
 
     NavHost(navController = navController, startDestination = "inicio") {
-        composable("inicio") { LoginScreen(navController,LoginScreenVM) }
+
+        composable("inicio") { LoginScreen(navController,usrViewModel) }
         composable("main_menu") { MainMenuScreen(navController) }
         composable("registro") { RegisterScreen(navController, usrViewModel) }
         composable("cambio_carrera"){ModifyMajorScreen(navController,mdfyMjrVM)}
         composable("UserListScreen"){ UserListScreen(viewModel = usrViewModel,
             onSearch={})}
-
+        composable("agregar_tarea"){TaskRegisterScreen(navController,tskViewModel)}
 
     }
 }

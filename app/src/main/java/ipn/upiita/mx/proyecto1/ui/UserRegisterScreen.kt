@@ -147,12 +147,31 @@ fun RegisterScreen (navController: NavHostController,userViewModel: UserViewMode
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            OutlinedTextField(
+                value = regVM.confirmPassword,
+                onValueChange = { regVM.confirmPassword = it },
+                label = { Text("confirme la ontraseña") },
+                isError = regVM.confirmPasswordError.isNotEmpty(),
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (regVM.confirmPasswordError.isNotEmpty()) {
+                Text(regVM.confirmPasswordError, color = MaterialTheme.colorScheme.error)
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = {
                     Log.d("RegisterScreen", "Botón presionado")
-                    regVM.insertarUsuario()
-                    navController.navigate("inicio")
-                          },
+                    if(regVM.validarCampos()) {
+                        regVM.insertarUsuario()
+                        navController.navigate("inicio")
+                    }
+                                             },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Registrar")

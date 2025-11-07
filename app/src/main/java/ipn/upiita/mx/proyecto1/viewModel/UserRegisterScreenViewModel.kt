@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import ipn.upiita.mx.proyecto1.model.*
 import kotlinx.coroutines.launch
 import android.util.Log
-class UserRegisterScreenViewModel(private val userViewModel: UserViewModel) : ViewModel() {
+class UserRegisterScreenViewModel(private val userViewModel: UserViewModel) {
 
     var nombre by mutableStateOf("")
     var boleta by mutableStateOf("")
@@ -32,6 +32,7 @@ class UserRegisterScreenViewModel(private val userViewModel: UserViewModel) : Vi
         var isValid = true
         Log.d("UserRegisterScreenViewModel", "iniciando comprobacion de campos")
         nombreError = if (nombre.isBlank()) {
+            Log.d("UserRegisterScreenViewModel", "el nombre no es valido")
             isValid = false
             "El nombre es obligatorio"
         } else {
@@ -40,11 +41,13 @@ class UserRegisterScreenViewModel(private val userViewModel: UserViewModel) : Vi
         }
 
         boletaError = if (boleta.isBlank()) {
+            Log.d("UserRegisterScreenViewModel", "la boleta no es valida")
             isValid = false
             "La boleta es obligatoria"
         } else {""}
 
         correoError = if (!isEmailValido(correo)) {
+            Log.d("UserRegisterScreenViewModel", "el email no es valido")
             isValid = false
             "Correo no válido"
         } else {
@@ -52,26 +55,35 @@ class UserRegisterScreenViewModel(private val userViewModel: UserViewModel) : Vi
             ""}
 
         carreraError = if (carrera.isBlank()) {
-            isValid = false
+            Log.d("UserRegisterScreenViewModel", "la carrera no es valido")
+                    isValid = false
             "La carrera es obligatoria"
-        } else {""}
+        } else {
+            Log.d("UserRegisterScreenViewModel", "la carrera es valida")
+            ""}
 
         passwordError = if (password.length < 6) {
+            Log.d("UserRegisterScreenViewModel", "la contraseña NO es valida")
             isValid = false
             "La contraseña debe tener al menos 6 caracteres"
         } else { "" }
 
         confirmPasswordError = if (confirmPassword != password) {
+            Log.d("UserRegisterScreenViewModel", "la contraseña NO es coincide")
             isValid = false
             "Las contraseñas no coinciden"
-        } else {""}
+        } else {
+            Log.d("UserRegisterScreenViewModel", "las contraseñas no coinciden")
+            "" }
 
         registroExitoso = isValid
+        Log.d("UserRegisterScreenViewModel", "isValid es: "+isValid)
         return isValid
     }
 
 
     fun insertarUsuario(){
+        Log.d("UserRegisterScreenViewModel", "iniciando metodo de insercion")
         if(validarCampos()) {
             Log.d("UserRegisterScreenViewModel", "todos los campos correctos y validados dentro del view model")
             val usuario = User(
@@ -94,5 +106,6 @@ class UserRegisterScreenViewModel(private val userViewModel: UserViewModel) : Vi
         )
         return pattern.matcher(email).matches()
     }
+
 
 }

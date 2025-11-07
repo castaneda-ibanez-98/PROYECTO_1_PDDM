@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ipn.upiita.mx.proyecto1.model.*
 import android.util.Log
+import kotlinx.coroutines.flow.mapNotNull
 
 class UserViewModel (private val repository: UserRepository) : ViewModel() {
 
@@ -28,6 +29,10 @@ class UserViewModel (private val repository: UserRepository) : ViewModel() {
             repository.insert(user)
             Log.d("UserViewModel", "Inserción completada.")
         }
+    }
+
+    suspend fun getUserByEmail(email:String):User?{
+        return repository.findByEmail(email)
     }
 
 

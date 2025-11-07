@@ -18,6 +18,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
@@ -27,11 +28,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import ipn.upiita.mx.proyecto1.viewModel.LoginScreenViewModel
-
+import ipn.upiita.mx.proyecto1.viewModel.UserViewModel
+import android.util.Log
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LoginScreen(navController: NavHostController, LSviewModel: LoginScreenViewModel= viewModel()) {
-
+fun LoginScreen(navController: NavHostController, userViewModel: UserViewModel) {
+val LSviewModel = remember { LoginScreenViewModel(userViewModel) }
 
     fun validateAndLogin() {
 
@@ -98,7 +100,12 @@ fun LoginScreen(navController: NavHostController, LSviewModel: LoginScreenViewMo
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { validateAndLogin() },
+                onClick = { validateAndLogin()
+                          LSviewModel.validateAndLogin(
+                              onSuccess ={ navController.navigate("main_menu")},
+                              onError = {mensaje->Log.d("login","mensaje")}
+                          )
+                          },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Ingresar")

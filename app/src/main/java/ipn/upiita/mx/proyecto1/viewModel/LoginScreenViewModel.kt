@@ -9,6 +9,9 @@ import ipn.upiita.mx.proyecto1.ui.*
 import ipn.upiita.mx.proyecto1.ui.Navigator
 import androidx.navigation.NavHostController
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+
 class LoginScreenViewModel(private val userViewModel: UserViewModel) : ViewModel(){
     var email by mutableStateOf("")
     var password by mutableStateOf("")
@@ -38,6 +41,18 @@ class LoginScreenViewModel(private val userViewModel: UserViewModel) : ViewModel
 
         return isValid;
     }
+    fun validateAndLogin(onSuccess: () -> Unit, onError: (String) -> Unit){
+        viewModelScope.launch {
+            val user =userViewModel.getUserByEmail(email)
+        if(user == null){
+            onError("usuario no encontrado")
+        }else if(user.contrasena!=password){
+            onError("contraseña incorrecta")
+        }else
+            onSuccess()
+        }
+    }
+
 }
 
 
