@@ -9,7 +9,7 @@ import ipn.upiita.mx.proyecto1.ui.*
 import ipn.upiita.mx.proyecto1.ui.Navigator
 import androidx.navigation.NavHostController
 import androidx.lifecycle.ViewModel
-class LoginScreenViewModel : ViewModel(){
+class LoginScreenViewModel(private val userViewModel: UserViewModel) : ViewModel(){
     var email by mutableStateOf("")
     var password by mutableStateOf("")
 
@@ -28,12 +28,12 @@ class LoginScreenViewModel : ViewModel(){
     }
 
     fun validate():Boolean{
-        var isValid= true
+        var isValid= false
         emailError = if (isValidEmail(email)) "" else "Email no válido"
         passwordError = if (isValidPassword(password)) "" else "Contraseña inválida";
 
-        if(emailError.isNotEmpty() || passwordError.isNotEmpty()){
-            isValid=false;
+        if(emailError.isEmpty() && passwordError.isEmpty()){
+            isValid=true;
         }
 
         return isValid;

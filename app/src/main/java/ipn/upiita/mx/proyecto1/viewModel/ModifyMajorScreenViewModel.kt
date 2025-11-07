@@ -10,10 +10,11 @@ class ModifyMajorScreenViewModel : ViewModel(){
 
     var carrera by mutableStateOf("")
 
+    var carreraModificada by mutableStateOf("")
     var carreraError by mutableStateOf("")
 
     fun modifyMajor(){
-        print("se ah modificado la carrera a " + carrera)
+        carreraModificada = "la carrera se a modificado a "+ carrera
     }
 
 }

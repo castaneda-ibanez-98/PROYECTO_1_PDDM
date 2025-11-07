@@ -12,13 +12,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import ipn.upiita.mx.proyecto1.ui.theme.Proyecto1Theme
-
+import androidx.room.*
+import androidx.lifecycle.*
+import androidx.compose.*
+import kotlin.*
+import ipn.upiita.mx.proyecto1.model.*
 import ipn.upiita.mx.proyecto1.ui.*
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            "users.db")
+            .allowMainThreadQueries() // ⚠️ Solo para pruebas
+            .fallbackToDestructiveMigration()//igual pruebas
+            .build()
+
         setContent {
-            Navigator()
+            Navigator(db)
         }
     }
 }

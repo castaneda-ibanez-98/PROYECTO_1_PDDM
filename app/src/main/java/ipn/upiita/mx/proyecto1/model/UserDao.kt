@@ -22,6 +22,4 @@ interface UserDao{
     @Query("SELECT * FROM user ")
     suspend fun getAllUsers():List<User>;
 
-
-
 }

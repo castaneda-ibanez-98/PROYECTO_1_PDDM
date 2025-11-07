@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ipn.upiita.mx.proyecto1.model.*
+import android.util.Log
 
 class UserViewModel (private val repository: UserRepository) : ViewModel() {
 
@@ -23,10 +24,12 @@ class UserViewModel (private val repository: UserRepository) : ViewModel() {
 
     fun addUser(user: User) {
         viewModelScope.launch {
+            Log.d("UserViewModel", "Intentando insertar usuario: ${user.nombre}")
             repository.insert(user)
-            loadUsers()
+            Log.d("UserViewModel", "Inserción completada.")
         }
     }
+
 
     fun findUserByEmail(email: String) {
         viewModelScope.launch {

@@ -35,8 +35,8 @@ fun LoginScreen(navController: NavHostController, LSviewModel: LoginScreenViewMo
 
     fun validateAndLogin() {
 
-        if (LSviewModel.validate()) {
-            navController.navigate("menu")
+        if (LSviewModel.validate().equals(true)) {
+            navController.navigate("main_menu")
         }
     }
     fun goFormReg(){

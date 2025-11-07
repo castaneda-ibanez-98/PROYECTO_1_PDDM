@@ -3,6 +3,7 @@
 package ipn.upiita.mx.proyecto1.ui
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +20,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
@@ -34,8 +36,8 @@ import ipn.upiita.mx.proyecto1.viewModel.*
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 
 @Composable
-fun RegisterScreen (navController: NavHostController,regVM:UserRegisterScreenViewModel) {
-
+fun RegisterScreen (navController: NavHostController,userViewModel: UserViewModel) {
+    val regVM = remember { UserRegisterScreenViewModel(userViewModel) }
     Scaffold(
         topBar = {
             TopAppBar(title = { Text("Registro de usuario") })
@@ -55,7 +57,7 @@ fun RegisterScreen (navController: NavHostController,regVM:UserRegisterScreenVie
                 value = regVM.nombre,
                 onValueChange = { regVM.nombre = it },
                 label = { Text("nombre") },
-                isError = regVM.nombre.isNotEmpty() ,
+                isError = regVM.nombreError.isNotEmpty() ,
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Next
@@ -146,7 +148,11 @@ fun RegisterScreen (navController: NavHostController,regVM:UserRegisterScreenVie
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { regVM.validarCampos() },
+                onClick = {
+                    Log.d("RegisterScreen", "Botón presionado")
+                    regVM.insertarUsuario()
+                    navController.navigate("inicio")
+                          },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Registrar")

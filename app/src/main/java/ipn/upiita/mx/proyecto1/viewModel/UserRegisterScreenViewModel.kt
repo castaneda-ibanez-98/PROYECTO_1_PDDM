@@ -5,8 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import java.util.regex.Pattern
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import ipn.upiita.mx.proyecto1.model.*
+import kotlinx.coroutines.launch
+import android.util.Log
+class UserRegisterScreenViewModel(private val userViewModel: UserViewModel) : ViewModel() {
 
-class UserRegisterScreenViewModel : ViewModel() {
     var nombre by mutableStateOf("")
     var boleta by mutableStateOf("")
     var correo by mutableStateOf("")
@@ -22,6 +26,7 @@ class UserRegisterScreenViewModel : ViewModel() {
     var passwordError by mutableStateOf("")
     var confirmPasswordError by mutableStateOf("")
     var registroExitoso by mutableStateOf(false)
+    var mensajeRegistroExitoso by mutableStateOf("")
 
     fun validarCampos(): Boolean {
         var isValid = true
@@ -58,6 +63,24 @@ class UserRegisterScreenViewModel : ViewModel() {
 
         registroExitoso = isValid
         return isValid
+    }
+
+
+    fun insertarUsuario(){
+        if(validarCampos()) {
+            Log.d("UserRegisterScreenViewModel", "todos los campos correctos y validados dentro del view model")
+            val usuario = User(
+                boleta = boleta,
+                nombre = nombre,
+                carrera = carrera,
+                contrasena = password,
+                correo = correo
+            )
+            Log.d("UserRegisterScreenViewModel", "procediendo a la insercion en el userViewModel")
+            userViewModel.addUser(usuario )
+            registroExitoso = true
+            mensajeRegistroExitoso = "se ah registrado al usuario"
+        }
     }
 
     private fun isEmailValido(email: String): Boolean {

@@ -74,7 +74,9 @@ fun ModifyMajorScreen(navController: NavHostController,
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-
+            if (MMVM.carreraModificada.isNotEmpty()) {
+                Text(MMVM.carreraModificada, color = MaterialTheme.colorScheme.error)
+            }
             Button(
                 onClick = { registrar() },
                 modifier = Modifier.fillMaxWidth()
@@ -85,7 +87,7 @@ fun ModifyMajorScreen(navController: NavHostController,
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { },
+                onClick = { goBack() },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Cancelar")
