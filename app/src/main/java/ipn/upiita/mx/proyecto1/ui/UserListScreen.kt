@@ -21,6 +21,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -43,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import ipn.upiita.mx.proyecto1.viewModel.*
+import ipn.upiita.mx.proyecto1.model.*
 @Composable
 
 fun UserListScreen(viewModel: UserViewModel, onSearch: () -> Unit) {
@@ -60,11 +63,28 @@ fun UserListScreen(viewModel: UserViewModel, onSearch: () -> Unit) {
     ) { padding ->
         LazyColumn(Modifier.padding(padding)) {
             items(users) { user ->
-                ListItem(
-                    headlineContent = { Text(user.nombre) },
-                    supportingContent = { Text(user.correo) }
-                )
+                UserItem(user)
             }
+        }
+    }
+
+}
+
+
+
+@Composable
+fun UserItem(user: User) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        Column(Modifier.padding(12.dp)) {
+            Text("🆔 ID: ${user.boleta ?: "-"}")
+            Text("  ${user.nombre}")
+            Text(" carrera : ${user.carrera}")
+            Text("correo : ${user.correo}")
         }
     }
 }

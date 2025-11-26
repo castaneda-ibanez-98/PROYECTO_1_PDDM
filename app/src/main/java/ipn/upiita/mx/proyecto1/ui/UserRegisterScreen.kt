@@ -167,10 +167,13 @@ fun RegisterScreen (navController: NavHostController,userViewModel: UserViewMode
             Button(
                 onClick = {
                     Log.d("RegisterScreen", "Botón presionado")
-                    if(regVM.validarCampos()) {
-                        regVM.insertarUsuario()
-                        navController.navigate("inicio")
-                    }
+
+                        regVM.registrarUsuario(
+                            onSuccess = {navController.navigate("inicio")},
+                            onError = {mensaje->Log.d("registro","error al registrar usuario")}
+                        )
+
+
                                              },
                 modifier = Modifier.fillMaxWidth()
             ) {

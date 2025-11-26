@@ -62,18 +62,18 @@ class UserRegisterScreenViewModel(private val userViewModel: UserViewModel) {
             Log.d("UserRegisterScreenViewModel", "la carrera es valida")
             ""}
 
-        passwordError = if (isValidPassword(password)) {
+        passwordError = if (!isValidPassword(password)) {
             Log.d("UserRegisterScreenViewModel", "la contraseña NO es valida")
             isValid = false
             "La contraseña debe tener al menos 8 caracteres, un numero, una mayuscula y minuscula"
         } else { "" }
 
         confirmPasswordError = if (confirmPassword != password) {
-            Log.d("UserRegisterScreenViewModel", "la contraseña NO es coincide")
+            Log.d("UserRegisterScreenViewModel", "la contraseña NO  coinciden")
             isValid = false
             "Las contraseñas no coinciden"
         } else {
-            Log.d("UserRegisterScreenViewModel", "las contraseñas no coinciden")
+            Log.d("UserRegisterScreenViewModel", "las contraseñas  coinciden")
             "" }
 
         registroExitoso = isValid
@@ -82,7 +82,7 @@ class UserRegisterScreenViewModel(private val userViewModel: UserViewModel) {
     }
 
 
-    fun insertarUsuario(){
+    fun registrarUsuario(onSuccess: () -> Unit, onError: (String) -> Unit){
         Log.d("UserRegisterScreenViewModel", "iniciando metodo de insercion")
         if(validarCampos()) {
             Log.d("UserRegisterScreenViewModel", "todos los campos correctos y validados dentro del view model")
@@ -95,9 +95,12 @@ class UserRegisterScreenViewModel(private val userViewModel: UserViewModel) {
             )
             Log.d("UserRegisterScreenViewModel", "procediendo a la insercion en el userViewModel")
             userViewModel.addUser(usuario )
+            onSuccess()
             registroExitoso = true
             mensajeRegistroExitoso = "se ah registrado al usuario"
-        }
+        }else
+        { onError("usuario no encontrado") }
+
     }
 
     private fun isEmailValido(email: String): Boolean {
