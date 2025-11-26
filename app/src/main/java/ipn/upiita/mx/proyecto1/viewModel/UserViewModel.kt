@@ -53,4 +53,10 @@ class UserViewModel (private val repository: UserRepository) : ViewModel() {
             _selectedUser.value = repository.findByStudentId(studentId)
         }
     }
+    fun actualizarUsuario(user:User?){
+        viewModelScope.launch {
+            repository.update(user)
+        }
+    }
+
 }

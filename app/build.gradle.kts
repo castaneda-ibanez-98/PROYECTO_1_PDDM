@@ -65,6 +65,13 @@ dependencies {
     kapt(libs.room.compiler)
     testImplementation(libs.room.testing)
     implementation(libs.androidx.sqlite)
+/*agregados de api-rest*/
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
+
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

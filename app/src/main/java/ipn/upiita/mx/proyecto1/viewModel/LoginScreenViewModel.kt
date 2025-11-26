@@ -19,7 +19,7 @@ class LoginScreenViewModel(private val userViewModel: UserViewModel) : ViewModel
     // Mensajes de error
     var emailError by mutableStateOf("")
     var passwordError by mutableStateOf("")
-
+    var loginError by mutableStateOf("")
 
     fun isValidEmail(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
@@ -45,8 +45,10 @@ class LoginScreenViewModel(private val userViewModel: UserViewModel) : ViewModel
         viewModelScope.launch {
             val user =userViewModel.getUserByEmail(email)
         if(user == null){
+            loginError =" Correo o Contraseña incorrectos "
             onError("usuario no encontrado")
         }else if(user.contrasena!=password){
+            loginError =" Correo o Contraseña incorrectos "
             onError("contraseña incorrecta")
         }else
             onSuccess()

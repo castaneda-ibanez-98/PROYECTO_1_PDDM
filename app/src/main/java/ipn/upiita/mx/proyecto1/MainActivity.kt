@@ -22,16 +22,17 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        /*
         val db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
             "users.db")
             .allowMainThreadQueries() // ⚠️ Solo para pruebas
             .fallbackToDestructiveMigration()//igual pruebas
-            .build()
+            .build()*/
 
         setContent {
-            Navigator(db)
+            Navigator()
         }
     }
 }

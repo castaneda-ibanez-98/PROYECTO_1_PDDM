@@ -15,4 +15,7 @@ class UserRepository(private val dao: UserDao) {
     suspend fun findByName(name: String) = dao.getUserByName(name)
     suspend fun findByStudentId(studentId: String) = dao.getUserByStudentId(studentId)
 
+    suspend fun update(user: User?) {
+        user?.let { dao.updateUser(it) } }
+
 }

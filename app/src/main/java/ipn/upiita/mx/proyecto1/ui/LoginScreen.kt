@@ -1,6 +1,7 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 package ipn.upiita.mx.proyecto1.ui
 
+import android.R
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,17 +31,15 @@ import androidx.navigation.NavHostController
 import ipn.upiita.mx.proyecto1.viewModel.LoginScreenViewModel
 import ipn.upiita.mx.proyecto1.viewModel.UserViewModel
 import android.util.Log
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.graphics.Color
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun LoginScreen(navController: NavHostController, userViewModel: UserViewModel) {
 val LSviewModel = remember { LoginScreenViewModel(userViewModel) }
 
-    fun validateAndLogin() {
 
-        if (LSviewModel.validate().equals(true)) {
-            navController.navigate("main_menu")
-        }
-    }
     fun goFormReg(){
         navController.navigate("registro")
     }
@@ -79,8 +78,6 @@ val LSviewModel = remember { LoginScreenViewModel(userViewModel) }
 
 
 
-
-
             OutlinedTextField(
                 value = LSviewModel.password,
                 onValueChange = { LSviewModel.password = it },
@@ -98,12 +95,20 @@ val LSviewModel = remember { LoginScreenViewModel(userViewModel) }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "olvido su contraseña?",
+                modifier = Modifier.clickable {
+                    navController.navigate("olvido-contrasena")
+                }.padding(8.dp),
+                color = Color.Red,
+                style = MaterialTheme.typography.bodyMedium
+            )
 
             Button(
-                onClick = { validateAndLogin()
+                onClick = {
                           LSviewModel.validateAndLogin(
                               onSuccess ={ navController.navigate("main_menu")},
-                              onError = {mensaje->Log.d("login","mensaje")}
+                              onError = {mensaje->Log.d("login","error al iniciar sesion")}
                           )
                           },
                 modifier = Modifier.fillMaxWidth()
@@ -120,7 +125,13 @@ val LSviewModel = remember { LoginScreenViewModel(userViewModel) }
                 Text("registrarse")
             }
 
-
+            LSviewModel.loginError?.let {
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(text = it,
+                color = Color.Red,
+                style = MaterialTheme.typography.bodyMedium
+                )
+            }
 
 
 

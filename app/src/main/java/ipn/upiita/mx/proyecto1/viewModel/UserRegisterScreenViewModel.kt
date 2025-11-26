@@ -62,10 +62,10 @@ class UserRegisterScreenViewModel(private val userViewModel: UserViewModel) {
             Log.d("UserRegisterScreenViewModel", "la carrera es valida")
             ""}
 
-        passwordError = if (password.length < 6) {
+        passwordError = if (isValidPassword(password)) {
             Log.d("UserRegisterScreenViewModel", "la contraseña NO es valida")
             isValid = false
-            "La contraseña debe tener al menos 6 caracteres"
+            "La contraseña debe tener al menos 8 caracteres, un numero, una mayuscula y minuscula"
         } else { "" }
 
         confirmPasswordError = if (confirmPassword != password) {
@@ -106,6 +106,11 @@ class UserRegisterScreenViewModel(private val userViewModel: UserViewModel) {
         )
         return pattern.matcher(email).matches()
     }
+    fun isValidPassword(password: String): Boolean {
+        val regex = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}\$")
+        return regex.matcher(password).matches()
+    }
+
 
 
 }

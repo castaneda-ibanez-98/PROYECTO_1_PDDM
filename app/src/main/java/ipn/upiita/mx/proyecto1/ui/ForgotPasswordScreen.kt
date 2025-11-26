@@ -18,35 +18,32 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import ipn.upiita.mx.proyecto1.viewModel.ForgotPasswordScreenViewModel
 import ipn.upiita.mx.proyecto1.viewModel.LoginScreenViewModel
+import ipn.upiita.mx.proyecto1.viewModel.UserRegisterScreenViewModel
+import ipn.upiita.mx.proyecto1.viewModel.UserViewModel
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ForgotPasswordScreen(navController: NavHostController, LSviewModel: LoginScreenViewModel= viewModel()) {
+fun ForgotPasswordScreen1(navController: NavHostController, userViewModel: UserViewModel) {
+    val regVM = remember { ForgotPasswordScreenViewModel(userViewModel) }
 
 
-    fun validateAndLogin() {
-
-        if (LSviewModel.validate().equals(true)) {
-            navController.navigate("main_menu")
-        }
-    }
-    fun goFormReg(){
-        navController.navigate("registro")
-    }
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Iniciar Sesión") })
+            TopAppBar(title = { Text("Olvide mi contraseña") })
         }
     ) {
         Column(
@@ -60,31 +57,106 @@ fun ForgotPasswordScreen(navController: NavHostController, LSviewModel: LoginScr
 
 
             OutlinedTextField(
-                value = LSviewModel.email,
-                onValueChange = { LSviewModel.email = it },
+                value = regVM.correo,
+                onValueChange = { regVM.correo = it },
                 label = { Text("Correo electrónico") },
-                isError = LSviewModel.emailError.isNotEmpty(),
+                isError = regVM.correoError.isNotEmpty(),
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Next
                 ),
                 modifier = Modifier.fillMaxWidth()
             )
-            if (LSviewModel.emailError.isNotEmpty()) {
-                Text(LSviewModel.emailError, color = MaterialTheme.colorScheme.error)
+            if (regVM.correoError.isNotEmpty()) {
+                Text(regVM.correoError, color = MaterialTheme.colorScheme.error)
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = { regVM.verificarUsuario() },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Ingresar correo")
+            }
+
+            regVM.existeUsuarioError.let {
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(text = regVM.existeUsuarioError,
+                    color = Color.Red,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+
+            regVM.existeUsuario.let {
+                Text(
+                    text = "cual es su boleta",
+                    color = Color.Red,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                OutlinedTextField(
+                    value = regVM.pregunta,
+                    onValueChange = { regVM.pregunta = it },
+                    label = { Text("respuesta") },
+                    isError = regVM.preguntaError.isNotEmpty(),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+                if (regVM.pregunta.isNotEmpty()) {
+                    Text(regVM.pregunta, color = MaterialTheme.colorScheme.error)
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = { navController.navigate("inicio") },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("cancelar")
+                }
+                Button(
+                    onClick = { navController.navigate("olvido-contrasena2") },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("cancelar")
+                }
+
+            }
+
+
+
+
+
+        }
+    }
+}
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+fun ForgotPasswordScreen2(navController: NavHostController, userViewModel: UserViewModel) {
+    val regVM = remember { UserRegisterScreenViewModel(userViewModel) }
+    Scaffold(
+        topBar = {
+            TopAppBar(title = { Text("Olvide mi contraseña") })
+        }
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-
-
-
-
             OutlinedTextField(
-                value = LSviewModel.password,
-                onValueChange = { LSviewModel.password = it },
+                value = regVM.password,
+                onValueChange = { regVM.password = it },
                 label = { Text("Contraseña") },
-                isError = LSviewModel.passwordError.isNotEmpty(),
+                isError = regVM.passwordError.isNotEmpty(),
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Password,
@@ -92,14 +164,32 @@ fun ForgotPasswordScreen(navController: NavHostController, LSviewModel: LoginScr
                 ),
                 modifier = Modifier.fillMaxWidth()
             )
-            if (LSviewModel.passwordError.isNotEmpty()) {
-                Text(LSviewModel.passwordError, color = MaterialTheme.colorScheme.error)
+            if (regVM.passwordError.isNotEmpty()) {
+                Text(regVM.passwordError, color = MaterialTheme.colorScheme.error)
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
+                value = regVM.confirmPassword,
+                onValueChange = { regVM.confirmPassword = it },
+                label = { Text("confirme la ontraseña") },
+                isError = regVM.confirmPasswordError.isNotEmpty(),
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (regVM.confirmPasswordError.isNotEmpty()) {
+                Text(regVM.confirmPasswordError, color = MaterialTheme.colorScheme.error)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { validateAndLogin() },
+                onClick = {  },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Ingresar")
@@ -108,7 +198,7 @@ fun ForgotPasswordScreen(navController: NavHostController, LSviewModel: LoginScr
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { goFormReg() },
+                onClick = {  },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("registrarse")

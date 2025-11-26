@@ -140,6 +140,13 @@ fun MainMenuScreen(navController: NavHostController) {
                     ) {
                         Text("ver usuarios")
                     }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(
+                        onClick = { navController.navigate("TaskListScreen") },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("ver tareas")
+                    }
 
                 }
             }

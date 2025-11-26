@@ -20,15 +20,29 @@ import ipn.upiita.mx.proyecto1.model.*
 import ipn.upiita.mx.proyecto1.viewModel.*
 import androidx.room.*
 import androidx.compose.runtime.*
+import ipn.upiita.mx.proyecto1.apiclient.RetrofitClient
+import ipn.upiita.mx.proyecto1.apiclient.TaskApiService
+
 @SuppressLint("ViewModelConstructorInComposable")
 @Composable
-fun Navigator( db : AppDatabase) {
+fun Navigator() {
     val navController = rememberNavController()
-    // Crear el repositorio
+    val context = LocalContext.current
+
+    val db = remember{DatabaseClient.getDatabase(context = context)}
+
+    // Creamos los repositorios
     val userRepo = UserRepository(db.userDao())
-    val taskRepo = TaskRepository(db.taskDao())
+
+    val taskRepo = TaskRepository(
+        local=db.taskDao(),
+        remoto= RetrofitClient.api,
+        modo = false)
+
+
     val usrViewModel = UserViewModel(userRepo)
     val tskViewModel = TaskViewModel(taskRepo)
+
     /*
     forma original
     val UsrRgstVM: UserRegisterScreenViewModel = viewModel()
@@ -38,7 +52,7 @@ fun Navigator( db : AppDatabase) {
 
     val LoginScreenVM = remember { LoginScreenViewModel(usrViewModel) }
     val mdfyMjrVM: ModifyMajorScreenViewModel = viewModel()
-
+    val frgtPassword = remember { ForgotPasswordScreenViewModel(usrViewModel) }
 
     NavHost(navController = navController, startDestination = "inicio") {
 
@@ -48,7 +62,12 @@ fun Navigator( db : AppDatabase) {
         composable("cambio_carrera"){ModifyMajorScreen(navController,mdfyMjrVM)}
         composable("UserListScreen"){ UserListScreen(viewModel = usrViewModel,
             onSearch={})}
+        composable("TaskListScreen"){ TaskListScreen(viewModel = tskViewModel,
+            onSearch={})}
         composable("agregar_tarea"){TaskRegisterScreen(navController,tskViewModel)}
+        composable("olvido-contrasena"){ForgotPasswordScreen1(navController,usrViewModel)}
+        composable("olvido-contrasena2"){ForgotPasswordScreen2(navController,usrViewModel)}
+
 
     }
 }
