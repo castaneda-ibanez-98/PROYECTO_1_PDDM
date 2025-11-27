@@ -62,7 +62,9 @@ fun Navigator() {
         composable("cambio_carrera"){ModifyMajorScreen(navController,mdfyMjrVM)}
         composable("UserListScreen"){ UserListScreen(viewModel = usrViewModel,
             onSearch={})}
-        composable("TaskListScreen"){ TaskListScreen(viewModel = tskViewModel,
+        composable("TaskListScreen"){ TaskListScreen(
+            navController = navController,
+            viewModel = tskViewModel,
             onSearch={})}
         composable("agregar_tarea"){TaskRegisterScreen(navController,tskViewModel)}
         composable("olvido-contrasena"){ForgotPasswordScreen1(navController,usrViewModel)}

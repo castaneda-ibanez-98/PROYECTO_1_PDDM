@@ -14,9 +14,13 @@ class TaskRepository(private val local: TaskDao,
         suspend fun findByTaskId(taskId: Int) = local.getTaskById(taskId)
 
         suspend fun insert(task:Task){
-                local.InserTask(task)
+
                 if(modo){
+                        local.InserTask(task)
                         remoto.createTask("Bearer $token",task)
+                }
+                else{
+                        local.InserTask(task)
                 }
 
         }
@@ -31,6 +35,15 @@ class TaskRepository(private val local: TaskDao,
                         local.getAllTask()
                 }
 
+        }
+        suspend fun delete(task:Task){
+                if(modo){
+                        val taskRemota = remoto.deleteTask("Bearer $token",task.id)
+                        local.deleteTask(task)
+                }
+                else{
+                        local.deleteTask(task)
+                }
         }
 
 

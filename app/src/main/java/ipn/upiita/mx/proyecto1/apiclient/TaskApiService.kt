@@ -40,6 +40,13 @@ interface TaskApiService {
         @Body task: Task
     ): Task
 
+    @DELETE("tasks/{id}")
+    suspend fun deleteTask(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): Unit
+
+
 
 
 

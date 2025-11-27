@@ -35,6 +35,12 @@ class TaskViewModel(private val repository: TaskRepository): ViewModel() {
         return repository.findByName(email)
     }
 
+    fun eliminarTask(task:Task){
+        viewModelScope.launch {
+            repository.delete(task)
+            Log.d("taskViewModel", "task eliminada")
+        }
+    }
 
 
     fun findTaskByName(name: String) {
