@@ -32,11 +32,14 @@ fun Navigator() {
     val db = remember{DatabaseClient.getDatabase(context = context)}
 
     // Creamos los repositorios
-    val userRepo = UserRepository(db.userDao())
+    val userRepo = UserRepository(
+        local=db.userDao(),
+        remoto = RetrofitClient.userApi,
+        modo=false)
 
     val taskRepo = TaskRepository(
         local=db.taskDao(),
-        remoto= RetrofitClient.api,
+        remoto= RetrofitClient.taskApi,
         modo = false)
 
 

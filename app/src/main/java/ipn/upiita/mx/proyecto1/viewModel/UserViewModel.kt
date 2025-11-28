@@ -42,11 +42,6 @@ class UserViewModel (private val repository: UserRepository) : ViewModel() {
         }
     }
 
-    fun findUserByName(name: String) {
-        viewModelScope.launch {
-            _selectedUser.value = repository.findByName(name)
-        }
-    }
 
     fun findUserByStudentId(studentId: String) {
         viewModelScope.launch {

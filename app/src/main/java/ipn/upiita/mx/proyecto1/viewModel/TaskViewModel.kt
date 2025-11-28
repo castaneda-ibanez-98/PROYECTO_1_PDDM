@@ -31,10 +31,6 @@ class TaskViewModel(private val repository: TaskRepository): ViewModel() {
         }
     }
 
-    suspend fun getTaskByName(email:String):Task?{
-        return repository.findByName(email)
-    }
-
     fun eliminarTask(task:Task){
         viewModelScope.launch {
             repository.delete(task)
@@ -42,8 +38,11 @@ class TaskViewModel(private val repository: TaskRepository): ViewModel() {
         }
     }
 
+    suspend fun getTaskByName(email:String):Task?{
+        return repository.findByName(email)
+    }
 
-    fun findTaskByName(name: String) {
+    fun findTaskByName(name: String){
         viewModelScope.launch {
             _selectedTask.value = repository.findByName(name)
         }
