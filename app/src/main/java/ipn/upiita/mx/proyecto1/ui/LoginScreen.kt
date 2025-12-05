@@ -33,11 +33,12 @@ import ipn.upiita.mx.proyecto1.viewModel.UserViewModel
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.ui.graphics.Color
+import ipn.upiita.mx.proyecto1.viewModel.Sesion
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LoginScreen(navController: NavHostController, userViewModel: UserViewModel) {
-val LSviewModel = remember { LoginScreenViewModel(userViewModel) }
+fun LoginScreen(navController: NavHostController, userViewModel: UserViewModel,sesion: Sesion) {
+val LSviewModel = remember { LoginScreenViewModel(userViewModel, sesion ) }
 
 
     fun goFormReg(){

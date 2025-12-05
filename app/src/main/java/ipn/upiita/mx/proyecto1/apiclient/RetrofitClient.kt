@@ -17,7 +17,7 @@ object RetrofitClient {
             .create(TaskApiService::class.java)
     }
     */
-    private const val BASE_URL = "http://localhost:3000/api/tasks/"
+    private const val BASE_URL = "http://10.0.2.2:3000/api/"
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)

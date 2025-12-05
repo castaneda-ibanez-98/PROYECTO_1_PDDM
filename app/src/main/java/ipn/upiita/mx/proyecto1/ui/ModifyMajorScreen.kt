@@ -16,8 +16,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
@@ -28,15 +30,17 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import ipn.upiita.mx.proyecto1.viewModel.LoginScreenViewModel
 import ipn.upiita.mx.proyecto1.viewModel.ModifyMajorScreenViewModel
+import ipn.upiita.mx.proyecto1.viewModel.Sesion
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ModifyMajorScreen(navController: NavHostController,
-                      MMVM: ModifyMajorScreenViewModel= viewModel()) {
+                      MMVM: ModifyMajorScreenViewModel= viewModel(),sesion: Sesion) {
 
+    val user by sesion.userActual.collectAsState()
 
-    fun registrar(){
+    fun cambiar(){
         MMVM.modifyMajor()
     }
     fun goBack(){
@@ -57,28 +61,46 @@ fun ModifyMajorScreen(navController: NavHostController,
         ) {
 
 
+            /*<><><><><>*/
+            ExposedDropdownMenuBox(
+                expanded = MMVM.expanded,
+                onExpandedChange = { MMVM.expanded = !MMVM.expanded }
+            ) {
+                OutlinedTextField(
+                    value = MMVM.carrera,
+                    onValueChange = {},
+                    label = { Text("Carrera") },
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = MMVM.expanded)
+                    },
+                    readOnly = true,   // IMPORTANTE
+                    modifier = Modifier
+                        .menuAnchor()
+                        .fillMaxWidth()
+                )
 
-            OutlinedTextField(
-                value = MMVM.carrera,
-                onValueChange = { MMVM.carrera = it },
-                label = { Text("carrera") },
-                isError = MMVM.carreraError.isNotEmpty(),
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Email,
-                    imeAction = ImeAction.Next
-                ),
-                modifier = Modifier.fillMaxWidth()
-            )
-            if (MMVM.carreraError.isNotEmpty()) {
-                Text(MMVM.carreraError, color = MaterialTheme.colorScheme.error)
+                ExposedDropdownMenu(
+                    expanded = MMVM.expanded,
+                    onDismissRequest = { MMVM.expanded = false }
+                ) {
+                    MMVM.opciones.forEach { opcion ->
+                        DropdownMenuItem(
+                            text = { Text(opcion) },
+                            onClick = {
+                                MMVM.carrera = opcion
+                                MMVM.expanded = false
+                            }
+                        )
+                    }
+                }
             }
-
+            /*<><><><><><><><><><><><><><><><>*/
             Spacer(modifier = Modifier.height(16.dp))
             if (MMVM.carreraModificada.isNotEmpty()) {
                 Text(MMVM.carreraModificada, color = MaterialTheme.colorScheme.error)
             }
             Button(
-                onClick = { registrar() },
+                onClick = { cambiar() },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Modificar")

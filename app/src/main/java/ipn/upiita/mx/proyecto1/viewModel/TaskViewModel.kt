@@ -53,4 +53,11 @@ class TaskViewModel(private val repository: TaskRepository): ViewModel() {
             _selectedTask.value = repository.findByTaskId(taskId)
         }
     }
+
+    fun updateTask(task: Task){
+        viewModelScope.launch {
+            repository.update(task)
+        }
+    }
+
 }

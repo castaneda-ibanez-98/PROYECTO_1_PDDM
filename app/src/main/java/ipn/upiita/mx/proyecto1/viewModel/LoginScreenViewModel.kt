@@ -11,8 +11,15 @@ import androidx.navigation.NavHostController
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ipn.upiita.mx.proyecto1.viewModel.*
+import org.json.JSONObject
+import retrofit2.HttpException
 
-class LoginScreenViewModel(private val userViewModel: UserViewModel) : ViewModel(){
+class LoginScreenViewModel(
+    private val userViewModel: UserViewModel,
+    private val sesion: Sesion
+):ViewModel(){
+
     var email by mutableStateOf("")
     var password by mutableStateOf("")
 
@@ -43,18 +50,20 @@ class LoginScreenViewModel(private val userViewModel: UserViewModel) : ViewModel
     }
     fun validateAndLogin(onSuccess: () -> Unit, onError: (String) -> Unit){
         viewModelScope.launch {
-            val user =userViewModel.getUserByEmail(email)
-        if(user == null){
-            loginError =" Correo o Contraseña incorrectos "
-            onError("usuario no encontrado")
-        }else if(user.contrasena!=password){
-            loginError =" Correo o Contraseña incorrectos "
-            onError("contraseña incorrecta")
-        }else
-            onSuccess()
+            try{
+                userViewModel.login(email,password)
+                onSuccess()
+            }catch(e: HttpException){
+                if(e.code()==401 && e!=null){ onError(e.message())
+                   val errorBody=e.response()?.errorBody()?.string()
+                    loginError = JSONObject(errorBody?:"").getString("message")
+                }
+                else onError("error del servidor")
+            }catch(e: Exception){
+                onError("error del servidor")
+            }
         }
     }
-
 }
 
 

@@ -57,7 +57,7 @@ fun TaskListScreen(navController: NavHostController  ,viewModel: TaskViewModel, 
                 items(tasks) { task ->
                     TaskItem(task = task,
                         onDelete = { viewModel.eliminarTask(task) },
-                        onEdit = { navController.navigate("editar-task")})
+                        onEdit = { navController.navigate("editar-task/${task.id}")})
                 }
             }
         }

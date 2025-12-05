@@ -28,6 +28,14 @@ class UserRegisterScreenViewModel(private val userViewModel: UserViewModel) {
     var registroExitoso by mutableStateOf(false)
     var mensajeRegistroExitoso by mutableStateOf("")
 
+
+
+    var expanded by mutableStateOf(false)
+    val opciones = listOf<String>("Ingenieria Telematica",
+        "Ingenieria Mecatronica",
+        "Ingenieria en Energia",
+        "Ingenieria Bionicia")
+
     fun validarCampos(): Boolean {
         var isValid = true
         Log.d("UserRegisterScreenViewModel", "iniciando comprobacion de campos")

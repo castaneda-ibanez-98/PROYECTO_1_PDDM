@@ -3,12 +3,13 @@ package ipn.upiita.mx.proyecto1.model
 import android.util.Log
 import ipn.upiita.mx.proyecto1.apiclient.NetworkHelper
 import ipn.upiita.mx.proyecto1.apiclient.TaskApiService
+import ipn.upiita.mx.proyecto1.viewModel.Sesion
 
 class TaskRepository(private val local: TaskDao,
                      private val remoto: TaskApiService,
+                     private val sesion: Sesion,
                      private val modo: Boolean){
 
-        private val token = "tu_token_aqui"
         //suspend fun insert(task: Task) = local.InserTask(task)
         //suspend fun getAll() = local.getAllTask()
         //suspend fun findByName(name: String) = local.getTaskByName(name)
@@ -32,6 +33,7 @@ class TaskRepository(private val local: TaskDao,
         suspend fun findByTaskId(taskId: Int ):Task?{
                 Log.d("TaskRepository",
                         "iniciando busqueda por id")
+                val token = sesion.token.value
                 return if(modo){
                 val taskRemota = remoto.getTaskById("Bearer $token",taskId)
                         Log.d("TaskRepository",
@@ -49,13 +51,15 @@ class TaskRepository(private val local: TaskDao,
         }
         suspend fun insert(task:Task){
                 Log.d("TaskRepository", "task insetada: ${task.name}")
+                val token = sesion.token.value
                 if(modo){
                         local.InserTask(task)
                         Log.d("UserRepository",
                                 "insercion de la tarea en bd local realizada")
-                        remoto.createTask("Bearer $token",task)
                         Log.d("UserRepository",
-                                "insercion de la tarea en bd remota realizada")
+                                "insercion de la tarea en bd remota realizada con token $token")
+                        remoto.createTask("Bearer $token",task)
+
                 }
                 else{
                         Log.d("UserRepository",
@@ -64,8 +68,9 @@ class TaskRepository(private val local: TaskDao,
                 }
 
         }
-        suspend fun getAll():List<Task>{
 
+        suspend fun getAll():List<Task>{
+                val token = sesion.token.value
                 Log.d(
                         "UserRepository",
                         "iniciando obtencion de todas las tasks")
@@ -90,6 +95,7 @@ class TaskRepository(private val local: TaskDao,
         }
         suspend fun delete(task:Task){
                 Log.d("TaskRepository", "task eliminada: ${task.name}")
+                val token = sesion.token.value
                 if(modo){
                         Log.d("TaskRepository", "eliminando registro en la api")
                         val taskRemota = remoto.deleteTask("Bearer $token",task.id)
@@ -102,6 +108,7 @@ class TaskRepository(private val local: TaskDao,
                 }
         }
         suspend fun update(task:Task){
+                val token = sesion.token.value
                 Log.d("TaskRepository",
                         "iniciando la actualizacion de la tarea: ${task.name}")
                 if(modo){

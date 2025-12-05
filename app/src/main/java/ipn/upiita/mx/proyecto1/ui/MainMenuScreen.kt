@@ -38,16 +38,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.compose.ui.*
+import ipn.upiita.mx.proyecto1.viewModel.Sesion
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainMenuScreen(navController: NavHostController) {
+fun MainMenuScreen(navController: NavHostController, sesion: Sesion) {
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val scope = rememberCoroutineScope()
-
-        // --- Estructura principal con Drawer ---
-        ModalNavigationDrawer(
+    val user by sesion.userActual.collectAsState()
+    // --- Estructura principal con Drawer --- //
+    ModalNavigationDrawer(
             drawerState = drawerState,
             drawerContent = {
                 ModalDrawerSheet {
@@ -73,7 +74,7 @@ fun MainMenuScreen(navController: NavHostController) {
                     CenterAlignedTopAppBar(
                         title = {
                             Text(
-                                text = "Menú de Usuario",
+                                text = "Menú de ${user?.nombre} \n ${user?.carrera}",
                                 style = MaterialTheme.typography.titleLarge
                             )
                         },
@@ -119,20 +120,7 @@ fun MainMenuScreen(navController: NavHostController) {
                     ) {
                         Text("Agregar tarea")
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Button(
-                        onClick = { navController.navigate("modificar_tarea") },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text("Modificar tarea")
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Button(
-                        onClick = { navController.navigate("eliminar_tarea") },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text("Eliminar tarea")
-                    }
+
                     Spacer(modifier = Modifier.height(8.dp))
                     Button(
                         onClick = { navController.navigate("UserListScreen") },

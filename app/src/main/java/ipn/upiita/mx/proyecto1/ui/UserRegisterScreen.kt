@@ -13,7 +13,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -110,18 +113,40 @@ fun RegisterScreen (navController: NavHostController,userViewModel: UserViewMode
             /*zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz*/
 
             /*zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz*/
+            /*<><><><><>*/
+            ExposedDropdownMenuBox(
+                expanded = regVM.expanded,
+                onExpandedChange = { regVM.expanded = !regVM.expanded }
+            ) {
+                OutlinedTextField(
+                    value = regVM.carrera,
+                    onValueChange = {},
+                    label = { Text("Carrera") },
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = regVM.expanded)
+                    },
+                    readOnly = true,   // IMPORTANTE
+                    modifier = Modifier
+                        .menuAnchor()
+                        .fillMaxWidth()
+                )
+
+                ExposedDropdownMenu(
+                    expanded = regVM.expanded,
+                    onDismissRequest = { regVM.expanded = false }
+                ) {
+                    regVM.opciones.forEach { opcion ->
+                        DropdownMenuItem(
+                            text = { Text(opcion) },
+                            onClick = {
+                                regVM.carrera = opcion
+                                regVM.expanded = false
+                            }
+                        )
+                    }
+                }
+            }
             /*cambios hchos por mi*/
-            OutlinedTextField(
-                value = regVM.carrera,
-                onValueChange = { regVM.carrera = it },
-                label = { Text("carrera") },
-                isError = regVM.carreraError.isNotEmpty(),
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next
-                ),
-                modifier = Modifier.fillMaxWidth()
-            )
             if (regVM.carreraError.isNotEmpty()) {
                 Text(regVM.carreraError, color = MaterialTheme.colorScheme.error)
             }

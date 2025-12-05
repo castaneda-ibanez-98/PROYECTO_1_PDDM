@@ -11,20 +11,20 @@ import ipn.upiita.mx.proyecto1.model.*
 interface TaskApiService {
 
     /*obtener la lista completa de tasks*/
-    @GET(".")
+    @GET("tasks")
     suspend fun getTasks(
         @Header("Authorization") token: String
     ): List<Task>
 
     /*obtener una sola tarea*/
-    @GET(".")
+    @GET("tasks")
     suspend fun getTaskById(
         @Header("Authorization") token: String,
         @Path("id") id: Int
     ): Task?
 
     /*crear una sona instancia de task*/
-    @POST(".")
+    @POST("tasks")
     suspend fun createTask(
         @Header("Authorization") token: String,
         @Body task: Task

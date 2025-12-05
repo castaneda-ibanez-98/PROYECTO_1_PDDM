@@ -2,6 +2,7 @@
 package ipn.upiita.mx.proyecto1.ui
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,16 +12,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
-import android.app.DatePickerDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -30,25 +30,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.platform.LocalContext
-import java.util.Calendar
 import androidx.navigation.NavHostController
-import ipn.upiita.mx.proyecto1.viewModel.UserRegisterScreenViewModel
-import ipn.upiita.mx.proyecto1.viewModel.UserViewModel
+import ipn.upiita.mx.proyecto1.viewModel.TaskEditScreenViewModel
 import ipn.upiita.mx.proyecto1.viewModel.TaskRegisterScreenViewModel
+
 import ipn.upiita.mx.proyecto1.viewModel.TaskViewModel
+import java.util.Calendar
+
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun TaskRegisterScreen (navController: NavHostController,taskViewModel: TaskViewModel) {
-    val regVM = remember { TaskRegisterScreenViewModel(taskViewModel) }
+fun TaskEditScreen (navController: NavHostController,taskViewModel: TaskViewModel,taskId:Int) {
+    val tskVM = remember { TaskEditScreenViewModel(taskViewModel, taskId) }
+
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Registro de Tarea") })
+            TopAppBar(title = { Text("Modificar Tarea") })
         }
     ) {
         Column(
@@ -62,18 +63,18 @@ fun TaskRegisterScreen (navController: NavHostController,taskViewModel: TaskView
             /*zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz*/
             /*cambios hchos por mi*/
             OutlinedTextField(
-                value = regVM.nombre,
-                onValueChange = { regVM.nombre = it },
+                value = tskVM.nombre,
+                onValueChange = { tskVM.nombre = it },
                 label = { Text("nombre") },
-                isError = regVM.nombreError.isNotEmpty() ,
+                isError = tskVM.nombreError.isNotEmpty() ,
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Next
                 ),
                 modifier = Modifier.fillMaxWidth()
             )
-            if (regVM.nombreError.isNotEmpty()) {
-                Text(regVM.nombreError, color = MaterialTheme.colorScheme.error)
+            if (tskVM.nombreError.isNotEmpty()) {
+                Text(tskVM.nombreError, color = MaterialTheme.colorScheme.error)
             }
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -81,29 +82,29 @@ fun TaskRegisterScreen (navController: NavHostController,taskViewModel: TaskView
             /*zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz*/
 
 
-            DatePickerField(
-                fecha = regVM.fecha,
-                onFechaSeleccionada = { regVM.fecha = it }
+            DatePickerFieldEdit(
+                fecha = tskVM.fecha,
+                onFechaSeleccionada = { tskVM.fecha = it }
             )
-            if (regVM.fechaError.isNotEmpty()) {
-                Text(regVM.fechaError, color = MaterialTheme.colorScheme.error)
+            if (tskVM.fechaError.isNotEmpty()) {
+                Text(tskVM.fechaError, color = MaterialTheme.colorScheme.error)
             }
 
             Spacer(modifier = Modifier.height(8.dp))
 
             /*zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz*/
-
+            /*cambios hchos por mi*/
             /*<><><><><>*/
             ExposedDropdownMenuBox(
-                expanded = regVM.expanded,
-                onExpandedChange = { regVM.expanded = !regVM.expanded }
+                expanded = tskVM.expanded,
+                onExpandedChange = { tskVM.expanded = !tskVM.expanded }
             ) {
                 OutlinedTextField(
-                    value = regVM.estado,
+                    value = tskVM.estado,
                     onValueChange = {},
                     label = { Text("Carrera") },
                     trailingIcon = {
-                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = regVM.expanded)
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = tskVM.expanded)
                     },
                     readOnly = true,   // IMPORTANTE
                     modifier = Modifier
@@ -112,23 +113,22 @@ fun TaskRegisterScreen (navController: NavHostController,taskViewModel: TaskView
                 )
 
                 ExposedDropdownMenu(
-                    expanded = regVM.expanded,
-                    onDismissRequest = { regVM.expanded = false }
+                    expanded = tskVM.expanded,
+                    onDismissRequest = { tskVM.expanded = false }
                 ) {
-                    regVM.opciones.forEach { opcion ->
+                    tskVM.opciones.forEach { opcion ->
                         DropdownMenuItem(
                             text = { Text(opcion) },
                             onClick = {
-                                regVM.estado = opcion
-                                regVM.expanded = false
+                                tskVM.estado = opcion
+                                tskVM.expanded = false
                             }
                         )
                     }
                 }
             }
-
-            if (regVM.estado.isNotEmpty()) {
-                Text(regVM.estadoError, color = MaterialTheme.colorScheme.error)
+            if (tskVM.estado.isNotEmpty()) {
+                Text(tskVM.estadoError, color = MaterialTheme.colorScheme.error)
             }
             Spacer(modifier = Modifier.height(8.dp))
             /*zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz*/
@@ -137,9 +137,9 @@ fun TaskRegisterScreen (navController: NavHostController,taskViewModel: TaskView
             Button(
                 onClick = {
                     Log.d("RegisterScreen", "Botón presionado")
-                    if(regVM.validarCampos()) {
-                        regVM.insertarTarea()
-                        navController.navigate("main_menu")
+                    if(tskVM.validarCampos()) {
+                        tskVM.actualizarTarea()
+                        navController.navigate("TaskListScreen")
                     }
                 },
                 modifier = Modifier.fillMaxWidth()
@@ -151,7 +151,7 @@ fun TaskRegisterScreen (navController: NavHostController,taskViewModel: TaskView
 }
 
 @Composable
-fun DatePickerField(
+fun DatePickerFieldEdit(
     fecha: String,
     onFechaSeleccionada: (String) -> Unit
 ) {

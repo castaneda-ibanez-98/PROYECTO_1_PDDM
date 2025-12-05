@@ -15,8 +15,8 @@ interface UserDao{
     suspend fun insertUser(user: User)
 
     /*obtener usuario por id*/
-    @Query("SELECT * FROM user WHERE boleta =:boleta")
-    suspend fun getUserByStudentId(boleta :String):User?
+    @Query("SELECT * FROM user WHERE boleta =:id")
+    suspend fun getUserByStudentId(id :Int):User?
 
     /*obtener usuario por email*/
     @Query("SELECT * FROM user WHERE correo = :correo")

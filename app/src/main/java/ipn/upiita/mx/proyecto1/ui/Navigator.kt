@@ -20,6 +20,8 @@ import ipn.upiita.mx.proyecto1.model.*
 import ipn.upiita.mx.proyecto1.viewModel.*
 import androidx.room.*
 import androidx.compose.runtime.*
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import ipn.upiita.mx.proyecto1.apiclient.RetrofitClient
 import ipn.upiita.mx.proyecto1.apiclient.TaskApiService
 
@@ -29,18 +31,23 @@ fun Navigator() {
     val navController = rememberNavController()
     val context = LocalContext.current
 
-    val db = remember{DatabaseClient.getDatabase(context = context)}
+    val modo = true
 
+    val db = remember{DatabaseClient.getDatabase(context = context)}
+    val sesion : Sesion = viewModel()
     // Creamos los repositorios
     val userRepo = UserRepository(
         local=db.userDao(),
         remoto = RetrofitClient.userApi,
-        modo=false)
+        sesion = sesion,
+        modo=modo)
 
     val taskRepo = TaskRepository(
         local=db.taskDao(),
         remoto= RetrofitClient.taskApi,
-        modo = false)
+        sesion = sesion,
+        modo = modo)
+
 
 
     val usrViewModel = UserViewModel(userRepo)
@@ -53,16 +60,16 @@ fun Navigator() {
     val mdfyMjrVM: ModifyMajorScreenViewModel =viewModel()
     */
 
-    val LoginScreenVM = remember { LoginScreenViewModel(usrViewModel) }
-    val mdfyMjrVM: ModifyMajorScreenViewModel = viewModel()
+    val LoginScreenVM = remember { LoginScreenViewModel(usrViewModel,sesion) }
+    val mdfyMjrVM = remember { ModifyMajorScreenViewModel(usrViewModel,sesion) }
     val frgtPassword = remember { ForgotPasswordScreenViewModel(usrViewModel) }
 
     NavHost(navController = navController, startDestination = "inicio") {
 
-        composable("inicio") { LoginScreen(navController,usrViewModel) }
-        composable("main_menu") { MainMenuScreen(navController) }
+        composable("inicio") { LoginScreen(navController,usrViewModel,sesion) }
+        composable("main_menu") { MainMenuScreen(navController,sesion) }
         composable("registro") { RegisterScreen(navController, usrViewModel) }
-        composable("cambio_carrera"){ModifyMajorScreen(navController,mdfyMjrVM)}
+        composable("cambio_carrera"){ModifyMajorScreen(navController,mdfyMjrVM,sesion)}
         composable("UserListScreen"){ UserListScreen(viewModel = usrViewModel,
             onSearch={})}
         composable("TaskListScreen"){ TaskListScreen(
@@ -72,6 +79,14 @@ fun Navigator() {
         composable("agregar_tarea"){TaskRegisterScreen(navController,tskViewModel)}
         composable("olvido-contrasena"){ForgotPasswordScreen1(navController,usrViewModel)}
         composable("olvido-contrasena2"){ForgotPasswordScreen2(navController,usrViewModel)}
+        //composable("editar-task"){TaskEditScreen(navController,tskViewModel)}
+        composable(
+            route = "editar-task/{taskId}",
+            arguments = listOf(navArgument("taskId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val taskId = backStackEntry.arguments!!.getInt("taskId")
+            TaskEditScreen(navController, tskViewModel, taskId)
+        }
 
 
     }

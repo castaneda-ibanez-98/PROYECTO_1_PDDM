@@ -43,7 +43,7 @@ class UserViewModel (private val repository: UserRepository) : ViewModel() {
     }
 
 
-    fun findUserByStudentId(studentId: String) {
+    fun findUserByStudentId(studentId: Int) {
         viewModelScope.launch {
             _selectedUser.value = repository.findByStudentId(studentId)
         }
@@ -53,5 +53,9 @@ class UserViewModel (private val repository: UserRepository) : ViewModel() {
             repository.update(user)
         }
     }
+    suspend fun login(email:String,password:String){
+         repository.Login(email,password)
+    }
+
 
 }
