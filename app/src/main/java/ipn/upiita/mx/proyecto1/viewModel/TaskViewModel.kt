@@ -3,8 +3,10 @@ package ipn.upiita.mx.proyecto1.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ipn.upiita.mx.proyecto1.model.TaskRepository
+import ipn.upiita.mx.proyecto1.model.CrearTask
+import ipn.upiita.mx.proyecto1.model.repositorios.TaskRepository
 import ipn.upiita.mx.proyecto1.model.Task
+import ipn.upiita.mx.proyecto1.model.request.UpdateTaskRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -23,9 +25,8 @@ class TaskViewModel(private val repository: TaskRepository): ViewModel() {
         }
     }
 
-    fun addTask(task: Task) {
+    fun addTask(task: CrearTask) {
         viewModelScope.launch {
-            Log.d("UserViewModel", "Intentando insertar usuario: ${task.id}")
             repository.insert(task)
             Log.d("UserViewModel", "Inserción completada.")
         }
@@ -54,7 +55,7 @@ class TaskViewModel(private val repository: TaskRepository): ViewModel() {
         }
     }
 
-    fun updateTask(task: Task){
+    fun updateTask(task: UpdateTaskRequest){
         viewModelScope.launch {
             repository.update(task)
         }

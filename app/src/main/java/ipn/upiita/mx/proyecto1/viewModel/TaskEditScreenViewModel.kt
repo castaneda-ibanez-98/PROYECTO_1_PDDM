@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import ipn.upiita.mx.proyecto1.model.Task
+import ipn.upiita.mx.proyecto1.model.request.UpdateTaskRequest
 
 class TaskEditScreenViewModel (private val taskViewModel: TaskViewModel,private val taskId:Int) {
     var nombre by mutableStateOf("")
@@ -60,11 +61,11 @@ class TaskEditScreenViewModel (private val taskViewModel: TaskViewModel,private 
         Log.d("TaskEditScreenViewModel", "iniciando metodo de insercion actualizacion")
         if(validarCampos()) {
             Log.d("TaskEditScreenViewModel", "todos los campos correctos y validados dentro del view model")
-            val editado = Task(
+            val editado = UpdateTaskRequest(
                 id = taskId,
                 name = nombre,
                 deadline = fecha,
-                status = estado
+                status = estado,
             )
             Log.d("TaskEditScreenViewModel", "procediendo a la insercion en el taskViewModel de la task con id = ${editado.id}")
 

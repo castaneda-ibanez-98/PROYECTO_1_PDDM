@@ -9,6 +9,9 @@ import androidx.lifecycle.viewModelScope
 import ipn.upiita.mx.proyecto1.model.*
 import kotlinx.coroutines.launch
 import android.util.Log
+import ipn.upiita.mx.proyecto1.model.DTO.UserDTO
+import ipn.upiita.mx.proyecto1.model.request.CreateUserRequest
+
 class UserRegisterScreenViewModel(private val userViewModel: UserViewModel) {
 
     var nombre by mutableStateOf("")
@@ -94,15 +97,15 @@ class UserRegisterScreenViewModel(private val userViewModel: UserViewModel) {
         Log.d("UserRegisterScreenViewModel", "iniciando metodo de insercion")
         if(validarCampos()) {
             Log.d("UserRegisterScreenViewModel", "todos los campos correctos y validados dentro del view model")
-            val usuario = User(
+            val usuario = CreateUserRequest(
                 boleta = boleta,
                 nombre = nombre,
                 carrera = carrera,
-                contrasena = password,
-                correo = correo
+                correo = correo,
+                contrasena = password
             )
             Log.d("UserRegisterScreenViewModel", "procediendo a la insercion en el userViewModel")
-            userViewModel.addUser(usuario )
+            userViewModel.addUser(usuario)
             onSuccess()
             registroExitoso = true
             mensajeRegistroExitoso = "se ah registrado al usuario"

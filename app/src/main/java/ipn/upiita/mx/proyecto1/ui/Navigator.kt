@@ -12,7 +12,7 @@ import ipn.upiita.mx.proyecto1.ui.*
 import ipn.upiita.mx.proyecto1.viewModel.UserRegisterScreenViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import ipn.upiita.mx.proyecto1.model.UserRepository
+import ipn.upiita.mx.proyecto1.model.repositorios.UserRepository
 import ipn.upiita.mx.proyecto1.viewModel.LoginScreenViewModel
 import ipn.upiita.mx.proyecto1.viewModel.ModifyMajorScreenViewModel
 import ipn.upiita.mx.proyecto1.viewModel.UserViewModel
@@ -22,31 +22,48 @@ import androidx.room.*
 import androidx.compose.runtime.*
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import ipn.upiita.mx.proyecto1.AppContainer
+import ipn.upiita.mx.proyecto1.AppContainer.scheduleSync
 import ipn.upiita.mx.proyecto1.apiclient.RetrofitClient
 import ipn.upiita.mx.proyecto1.apiclient.TaskApiService
+import ipn.upiita.mx.proyecto1.model.repositorios.TaskRepository
 
 @SuppressLint("ViewModelConstructorInComposable")
 @Composable
-fun Navigator() {
+fun Navigator(sesion: Sesion) {
+/*sesion añadido como parametro*/
+
     val navController = rememberNavController()
+
+    /* se elimina lo siguiete por que se movio a appcontainer
     val context = LocalContext.current
-
-    val modo = true
-
     val db = remember{DatabaseClient.getDatabase(context = context)}
-    val sesion : Sesion = viewModel()
-    // Creamos los repositorios
+     val sesion : Sesion = viewModel()
+     */
+    val context =LocalContext.current
+    LaunchedEffect(Unit) {
+        scheduleSync(context)
+    }
+
+
+    val taskRepo = AppContainer.taskRepository
     val userRepo = UserRepository(
-        local=db.userDao(),
         remoto = RetrofitClient.userApi,
         sesion = sesion,
-        modo=modo)
+        modo=true)
 
+
+
+    /*
+    task repo movido a appcontainer para que funcione la sincronizacion
     val taskRepo = TaskRepository(
-        local=db.taskDao(),
-        remoto= RetrofitClient.taskApi,
+        local = db.taskDao(),
+        remoto = RetrofitClient.taskApi,
         sesion = sesion,
-        modo = modo)
+        modo = modo,
+        syncPrefs = todo()
+    )
+     */
 
 
 

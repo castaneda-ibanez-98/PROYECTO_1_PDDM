@@ -4,7 +4,9 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import ipn.upiita.mx.proyecto1.model.CrearTask
 import ipn.upiita.mx.proyecto1.model.Task
+import kotlin.Int
 
 class TaskRegisterScreenViewModel(private val taskViewModel: TaskViewModel) {
     var nombre by mutableStateOf("")
@@ -58,10 +60,10 @@ class TaskRegisterScreenViewModel(private val taskViewModel: TaskViewModel) {
         Log.d("TaskRegisterScreenViewModel", "iniciando metodo de insercion")
         if(validarCampos()) {
             Log.d("TaskRegisterScreenViewModel", "todos los campos correctos y validados dentro del view model")
-            val tarea = Task(
+            val tarea = CrearTask(
                 name = nombre,
                 deadline = fecha,
-                status = estado
+                status = estado,
             )
             Log.d("TaskRegisterScreenViewModel", "procediendo a la insercion en el taskViewModel")
 

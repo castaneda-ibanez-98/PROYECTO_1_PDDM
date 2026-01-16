@@ -62,7 +62,13 @@ dependencies {
 /*agregados de room*/
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
+
+    implementation(libs.androidx.work.runtime.ktx)
+
     kapt(libs.room.compiler)
+
+
+
     testImplementation(libs.room.testing)
     implementation(libs.androidx.sqlite)
 /*agregados de api-rest*/

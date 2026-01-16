@@ -15,9 +15,14 @@ import ipn.upiita.mx.proyecto1.ui.theme.Proyecto1Theme
 import androidx.room.*
 import androidx.lifecycle.*
 import androidx.compose.*
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlin.*
 import ipn.upiita.mx.proyecto1.model.*
 import ipn.upiita.mx.proyecto1.ui.*
+import ipn.upiita.mx.proyecto1.viewModel.Sesion
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +36,16 @@ class MainActivity : ComponentActivity() {
             .fallbackToDestructiveMigration()//igual pruebas
             .build()*/
 
+
+
         setContent {
-            Navigator()
+            /*siguientes 4 lineas agregadas asi como añadiendo
+            * sesion como parametro para navigator*/
+            val context = LocalContext.current
+            val sesion: Sesion = viewModel()
+            AppContainer.initialize(applicationContext, sesion)
+
+            Navigator(sesion)
         }
     }
 }

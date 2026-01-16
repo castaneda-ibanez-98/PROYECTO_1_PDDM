@@ -7,15 +7,18 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ipn.upiita.mx.proyecto1.model.*
 import android.util.Log
+import ipn.upiita.mx.proyecto1.model.DTO.UserDTO
+import ipn.upiita.mx.proyecto1.model.repositorios.UserRepository
+import ipn.upiita.mx.proyecto1.model.request.CreateUserRequest
 import kotlinx.coroutines.flow.mapNotNull
 
 class UserViewModel (private val repository: UserRepository) : ViewModel() {
 
-    private val _users = MutableStateFlow<List<User>>(emptyList())
-    val users: StateFlow<List<User>> get() = _users
+    private val _users = MutableStateFlow<List<UserDTO>>(emptyList())
+    val users: StateFlow<List<UserDTO>> get() = _users
 
-    private val _selectedUser = MutableStateFlow<User?>(null)
-    val selectedUser: StateFlow<User?> get() = _selectedUser
+    private val _selectedUser = MutableStateFlow<UserDTO?>(null)
+    val selectedUser: StateFlow<UserDTO?> get() = _selectedUser
 
     fun loadUsers() {
         viewModelScope.launch {
@@ -23,7 +26,7 @@ class UserViewModel (private val repository: UserRepository) : ViewModel() {
         }
     }
 
-    fun addUser(user: User) {
+    fun addUser(user: CreateUserRequest) {
         viewModelScope.launch {
             Log.d("UserViewModel", "Intentando insertar usuario: ${user.nombre}")
             repository.insert(user)
@@ -31,7 +34,7 @@ class UserViewModel (private val repository: UserRepository) : ViewModel() {
         }
     }
 
-    suspend fun getUserByEmail(email:String):User?{
+    suspend fun getUserByEmail(email:String):UserDTO?{
         return repository.findByEmail(email)
     }
 
@@ -48,7 +51,7 @@ class UserViewModel (private val repository: UserRepository) : ViewModel() {
             _selectedUser.value = repository.findByStudentId(studentId)
         }
     }
-    fun actualizarUsuario(user:User?){
+    fun actualizarUsuario(user: UserDTO?){
         viewModelScope.launch {
             repository.update(user)
         }
@@ -56,6 +59,10 @@ class UserViewModel (private val repository: UserRepository) : ViewModel() {
     suspend fun login(email:String,password:String){
          repository.Login(email,password)
     }
-
+    suspend fun obtenerActualizado(user: UserDTO){
+        viewModelScope.launch {
+            repository.obtenerActualizado(user)
+        }
+    }
 
 }

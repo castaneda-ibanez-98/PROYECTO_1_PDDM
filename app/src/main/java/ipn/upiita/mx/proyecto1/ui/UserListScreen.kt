@@ -46,6 +46,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import ipn.upiita.mx.proyecto1.viewModel.*
 import ipn.upiita.mx.proyecto1.model.*
+import ipn.upiita.mx.proyecto1.model.DTO.UserDTO
+
 @Composable
 
 fun UserListScreen(viewModel: UserViewModel, onSearch: () -> Unit) {
@@ -73,7 +75,7 @@ fun UserListScreen(viewModel: UserViewModel, onSearch: () -> Unit) {
 
 
 @Composable
-fun UserItem(user: User) {
+fun UserItem(user: UserDTO) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

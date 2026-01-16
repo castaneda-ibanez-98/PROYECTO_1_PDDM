@@ -6,8 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import ipn.upiita.mx.proyecto1.model.User
+import ipn.upiita.mx.proyecto1.model.request.ForgotPasswordRequest
 import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 
@@ -71,7 +70,7 @@ class ForgotPasswordScreenViewModel( private val userViewModel: UserViewModel): 
         }
     }
 
-    fun verificarPregunta(){
+    fun verificarBoleta(){
         viewModelScope.launch {
             Log.d("UserRegisterScreenViewModel", "verificando la pregunta")
 
@@ -86,7 +85,7 @@ class ForgotPasswordScreenViewModel( private val userViewModel: UserViewModel): 
         }
     }
 
-    fun actualizarUsuario(){
+    fun ForgotPasswordReq(){
         viewModelScope.launch {
 
             Log.d("UserRegisterScreenViewModel", "iniciando metodo de actualizacion")
@@ -99,8 +98,7 @@ class ForgotPasswordScreenViewModel( private val userViewModel: UserViewModel): 
                 var usuario = userViewModel.getUserByEmail(correo)
 
                 if (usuario != null) {
-                    val usuarioActualizado = usuario.copy(contrasena = password)
-                    userViewModel.actualizarUsuario(usuarioActualizado)
+                    val usuarioActualizado = ForgotPasswordRequest(pregunta, password)
                 }
                 Log.d(
                     "UserRegisterScreenViewModel",
@@ -111,7 +109,6 @@ class ForgotPasswordScreenViewModel( private val userViewModel: UserViewModel): 
             }
         }
     }
-
     private fun isEmailValido(email: String): Boolean {
         val pattern = Pattern.compile(
             "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
