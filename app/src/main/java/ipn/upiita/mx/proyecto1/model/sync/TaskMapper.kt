@@ -11,13 +11,14 @@ fun Task.toDTO()= TaskDTO(
     deadline,
     updatedAt,
     deleted)
-fun TaskDTO.toEntity()= Task(
-    id,
-    userId ,
-    name,
-    status,
-    deadline,
-    updatedAt,
-    false,
-    deleted)
+fun TaskDTO.toEntity() = Task(
+    id = id,
+    userId = userId,
+    name = name,
+    deadline = deadline,
+    status = status,
+    updatedAt = updatedAt,
+    pendingSync = false,
+    deleted = false
+)
 

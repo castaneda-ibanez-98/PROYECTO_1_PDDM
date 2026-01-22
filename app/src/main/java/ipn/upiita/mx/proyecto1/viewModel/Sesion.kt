@@ -1,5 +1,6 @@
 package ipn.upiita.mx.proyecto1.viewModel
 
+import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import ipn.upiita.mx.proyecto1.model.DTO.UserDTO
@@ -7,7 +8,8 @@ import ipn.upiita.mx.proyecto1.model.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class Sesion : ViewModel() {
+class Sesion(context : Context) : ViewModel() {
+
     private val _userActual= MutableStateFlow<UserDTO?>(null)
     val userActual = _userActual.asStateFlow()
 

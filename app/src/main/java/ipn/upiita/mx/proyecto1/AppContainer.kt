@@ -17,15 +17,10 @@ object AppContainer {
     lateinit var taskRepository: TaskRepository
         private set
 
-    // Esta función se llamará UNA sola vez cuando inicie la app
     fun initialize(context: Context, sesion: Sesion) {
-
         if (::taskRepository.isInitialized) return
-
         val db = DatabaseClient.getDatabase(context)
-
         val syncPrefs = SyncPrefs(context)
-
         taskRepository = TaskRepository(
             local = db.taskDao(),
             remoto = RetrofitClient.taskApi,
@@ -36,19 +31,17 @@ object AppContainer {
 
 
     fun scheduleSync(context: Context) {
-        // 1. Definimos la restricción: "SOLO EJECUTAR SI HAY INTERNET"
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
 
-        // 2. Creamos una solicitud de UNA SOLA VEZ (OneTime)
         val syncRequest = OneTimeWorkRequestBuilder<TaskSyncWorker>()
             .setConstraints(constraints)
             .build()
 
         WorkManager.getInstance(context).enqueueUniqueWork(
             "SyncTasksNow",
-            ExistingWorkPolicy.KEEP,/*para que no registre mas de una vez en caso de hacer la accion mas de una vez*/
+            ExistingWorkPolicy.KEEP,
             syncRequest
         )
     }

@@ -38,8 +38,14 @@ class TaskRepository(private val local: TaskDao,
         }
 
         suspend fun sync() {
+                val currentToken = sesion.token.value
+                if (currentToken == null) {
+                        Log.e("TaskRepo", "No hay token, no se puede sincronizar")
+                        return
+                }
+                val authHeader = "Bearer $currentToken"
                 val pending = local.getPendingSync()
-                val response = remoto.sync(pending.map { it.toDTO() })
+                val response = remoto.sync(authHeader,pending.map { it.toDTO() })
                 response.serverUpdates.forEach { serverTaskDto ->
                         if (serverTaskDto.tempId != null && serverTaskDto.tempId < 0) {
                                 local.deleteById(serverTaskDto.tempId)

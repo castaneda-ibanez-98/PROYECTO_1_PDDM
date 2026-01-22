@@ -63,7 +63,7 @@ interface TaskApiService {
     suspend fun getAll(): List<TaskDTO>
 
     @POST("tasks/sync")
-    suspend fun sync(@Body client: List<TaskDTO>): SyncResponseDTO
-
-
+    suspend fun sync(
+        @Header("Authorization") token: String,
+        @Body client: List<TaskDTO>): SyncResponseDTO
 }

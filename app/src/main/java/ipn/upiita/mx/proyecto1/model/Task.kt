@@ -17,6 +17,4 @@ data class Task(
     val updatedAt: Long,
     val pendingSync: Boolean = false,
     val deleted: Boolean = false
-
-    
 )

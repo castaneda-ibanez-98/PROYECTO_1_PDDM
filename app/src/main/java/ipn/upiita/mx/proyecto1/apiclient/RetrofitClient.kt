@@ -24,13 +24,10 @@ object RetrofitClient {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
-
     val taskApi : TaskApiService by lazy {
         retrofit.create(TaskApiService::class.java) }
 
     val userApi: UserApiService by lazy {
         retrofit.create(UserApiService::class.java)
     }
-
-
 }

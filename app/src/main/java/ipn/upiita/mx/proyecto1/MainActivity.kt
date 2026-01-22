@@ -35,17 +35,16 @@ class MainActivity : ComponentActivity() {
             .allowMainThreadQueries() // ⚠️ Solo para pruebas
             .fallbackToDestructiveMigration()//igual pruebas
             .build()*/
-
-
-
         setContent {
             /*siguientes 4 lineas agregadas asi como añadiendo
             * sesion como parametro para navigator*/
             val context = LocalContext.current
             val sesion: Sesion = viewModel()
+
             AppContainer.initialize(applicationContext, sesion)
 
             Navigator(sesion)
         }
     }
 }
+
